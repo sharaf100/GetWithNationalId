@@ -1,0 +1,1346 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0 effective-5.10 (swiftlang-6.0.0.9.10 clang-1600.0.26.2)
+// swift-module-flags: -target arm64-apple-ios15.6 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -enable-experimental-feature OpaqueTypeErasure -enable-bare-slash-regex -module-name SessionWithNationalId
+import Alamofire
+import Combine
+import CommonCrypto
+import CryptoKit
+import CryptoSwift
+import Foundation
+import JOSESwift
+import Moya
+import Security
+@_exported import SessionWithNationalId
+import Swift
+import SwiftCBOR
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc @_inheritsConvenienceInitializers public class CBOR : ObjectiveC.NSObject {
+  public class func encode(_ value: ObjectiveC.NSObject) -> [Swift.UInt8]?
+  public class func decode(_ value: [Swift.UInt8]) -> ObjectiveC.NSObject?
+  public class func unwrapAndDecode(_ value: [Swift.UInt8]) -> ObjectiveC.NSObject?
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ObjectiveC.NSObject {
+  public func encode() -> [Swift.UInt8]?
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  public func decode() -> ObjectiveC.NSObject?
+}
+public enum VerifyAlgorithmType : Swift.String {
+  case ECDSA256
+  case ECDSA384
+  case ECDSA512
+  public var coseProtectedMapValue: SessionWithNationalId.NSByteString {
+    get
+  }
+  public static func fromCurveAlg(alg: Swift.Int) -> SessionWithNationalId.VerifyAlgorithmType
+  public static func fromHeader(bstr: SessionWithNationalId.NSByteString) -> SessionWithNationalId.VerifyAlgorithmType?
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum MacAlgorithmType : Swift.String {
+  case HMAC256
+  case HMAC384
+  case HMAC512
+  public var coseProtectedMapValue: SessionWithNationalId.NSByteString {
+    get
+  }
+  public var variant: CryptoSwift.HMAC.Variant {
+    get
+  }
+  public static func fromHeader(bstr: SessionWithNationalId.NSByteString) -> SessionWithNationalId.MacAlgorithmType
+  public static func fromKeyLength(len: Swift.Int) -> SessionWithNationalId.MacAlgorithmType
+  public static func fromCurveAlg(alg: Swift.Int) -> SessionWithNationalId.MacAlgorithmType
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum DigestAlgorithmType : Swift.String {
+  case SHA256
+  case SHA384
+  case SHA512
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum EllipticCurveType : Swift.String {
+  case P256
+  case P384
+  case P521
+  public var keyLen: Swift.Int {
+    get
+  }
+  public var sizeInBits: Swift.Int {
+    get
+  }
+  public static func fromAlgValue(_ alg: Swift.Int) -> SessionWithNationalId.EllipticCurveType
+  public static func fromKeyLen(_ klen: Swift.Int) -> SessionWithNationalId.EllipticCurveType
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public class PKCS7 {
+  final public let mainBlock: SessionWithNationalId.ASN1Object
+  public init(data: Foundation.Data) throws
+  public var digestAlgorithm: Swift.String? {
+    get
+  }
+  public var digestAlgorithmName: Swift.String? {
+    get
+  }
+  public var certificate: SessionWithNationalId.X509Certificate? {
+    get
+  }
+  public var certificates: [SessionWithNationalId.X509Certificate] {
+    get
+  }
+  public var data: Foundation.Data? {
+    get
+  }
+  @objc deinit
+}
+public enum DeviceGuruException : Swift.Error {
+  case deviceNotPresentInThePlist(Swift.String)
+  case unableToCreateDeviceVersion(Swift.String)
+}
+final public class DeviceGuruImplementation : SessionWithNationalId.DeviceGuru {
+  final public let hardwareDetailProvider: any SessionWithNationalId.HardwareDetailProvider
+  public init(localStorage: any SessionWithNationalId.LocalStorage = UserDefaults.standard, hardwareDetailProvider: any SessionWithNationalId.HardwareDetailProvider = HardwareDetailProviderImplementation(), plistPath: Swift.String? = nil)
+  final public var hardwareString: Swift.String {
+    get
+  }
+  final public var platform: SessionWithNationalId.Platform {
+    get
+  }
+  final public func hardwareSimpleDescription() throws -> Swift.String
+  final public func hardwareDescription() throws -> Swift.String
+  final public func deviceVersion() throws -> SessionWithNationalId.DeviceVersion
+  @objc deinit
+}
+extension Foundation.UserDefaults : SessionWithNationalId.LocalStorage {
+}
+@_hasMissingDesignatedInitializers public class ASN1DERDecoder {
+  public static func decode(data: Foundation.Data) throws -> [SessionWithNationalId.ASN1Object]
+  @objc deinit
+}
+extension Foundation.Data {
+  public var uint64Value: Swift.UInt64? {
+    get
+  }
+}
+extension Foundation.Data {
+  public var sequenceContent: Foundation.Data {
+    get
+  }
+}
+final public class CoseKey : Swift.CustomStringConvertible {
+  final public var xdata: Foundation.Data
+  final public var ydata: Foundation.Data
+  final public var ddata: Foundation.Data?
+  final public var alg: Swift.Int
+  final public var kty: Swift.Int
+  final public var keyParams: Foundation.NSMutableDictionary
+  final public var publicKeyEncodable: ObjectiveC.NSObject {
+    get
+  }
+  final public var privateKeyEncodable: ObjectiveC.NSObject {
+    get
+  }
+  final public func getPortableKey(isPublic: Swift.Bool) -> ObjectiveC.NSObject
+  final public var cosePublicData: Foundation.Data {
+    get
+  }
+  final public var cosePrivateData: Foundation.Data {
+    get
+  }
+  final public func getx963Representation(isPublic: Swift.Bool) -> Foundation.Data
+  final public func getSecKey(isPublic: Swift.Bool) -> Security.SecKey?
+  final public var publicKey: SessionWithNationalId.CoseKey {
+    get
+  }
+  final public func makeEckaDhAgreement(with privateKeyx963Representation: Foundation.Data) -> CryptoKit.SharedSecret?
+  final public func makeEckaDhAgreementAppleSecurity(with privateKeyx963Representation: Foundation.Data, bUseLegacyAlg: Swift.Bool) -> Foundation.Data?
+  final public var description: Swift.String {
+    get
+  }
+  final public var publicKeyDescription: Swift.String {
+    get
+  }
+  public init?(decoded: ObjectiveC.NSObject)
+  final public func clone() -> SessionWithNationalId.CoseKey?
+  final public var x: Swift.String {
+    get
+  }
+  final public var y: Swift.String {
+    get
+  }
+  final public var d: Swift.String {
+    get
+  }
+  convenience public init?(bytes: [Swift.UInt8])
+  convenience public init(publicKeyx963Data: Foundation.Data)
+  convenience public init(privateKeyx963Data: Foundation.Data)
+  convenience public init(x: Swift.String, y: Swift.String, d: Swift.String)
+  convenience public init?(dict: Foundation.NSDictionary)
+  convenience public init?(base64: Swift.String) throws
+  convenience public init(isEphemeralPrivate: Swift.Bool, alg: Swift.Int)
+  final public func computeCoseMac0(_ cose0: Foundation.NSArray, key: Foundation.Data, onlyValue: Swift.Bool, macType: SessionWithNationalId.MacAlgorithmType) -> Foundation.Data
+  final public func validateCoseMac0(_ cose0: Foundation.NSArray, key: Foundation.Data, macType: SessionWithNationalId.MacAlgorithmType) -> Swift.Bool
+  final public func computeCoseSign1(_ coseSign1: Foundation.NSArray, onlyValue: Swift.Bool) -> Foundation.Data
+  final public func computeSign1Value(dataSign2: Foundation.Data) -> Foundation.Data
+  final public func validateCoseSign1(_ coseSign1: Foundation.NSArray) -> Swift.Bool
+  final public func makeSig(plaintext: Foundation.Data, using ecPrivateKey: any SessionWithNationalId.ECPrivateKey) -> Foundation.Data?
+  final public func isEqual(to other: SessionWithNationalId.CoseKey) -> Swift.Bool
+  public static func createFromPrivateEcBase64(_ readerPrivData: Foundation.Data) -> SessionWithNationalId.CoseKey!
+  @objc deinit
+}
+public protocol CreateSessionNetworkingProtocol {
+  func createUserSession(signedData: Swift.String, completion: @escaping (Swift.Result<SessionWithNationalId.CreateSessionResponse, SessionWithNationalId.NetworkError>) -> Swift.Void)
+}
+extension SessionWithNationalId.CreateSessionNetworkingProtocol {
+  public func createUserSession(signedData: Swift.String, completion: @escaping (Swift.Result<SessionWithNationalId.CreateSessionResponse, SessionWithNationalId.NetworkError>) -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers public class ASN1DEREncoder {
+  public static func encodeSequence(content: Foundation.Data) -> Foundation.Data
+  @objc deinit
+}
+extension Foundation.Data {
+  public var derEncodedSequence: Foundation.Data {
+    get
+  }
+}
+public class CertificateInfo : Swift.CustomDebugStringConvertible {
+  public init(ref: Security.SecCertificate)
+  public var publicKey: SessionWithNationalId.CoseKey? {
+    get
+    set
+  }
+  public var commonName: Swift.String? {
+    get
+    set
+  }
+  public var subjectSummary: Swift.String? {
+    get
+    set
+  }
+  public var email: Swift.String? {
+    get
+    set
+  }
+  public var thumbprint: Swift.String {
+    get
+    set
+  }
+  public var serialNumber: Swift.String? {
+    get
+    set
+  }
+  public var issuerDistinguishedName: Swift.String {
+    get
+    set
+  }
+  public var issuingCountry: Swift.String {
+    get
+    set
+  }
+  public var issuerArray: Foundation.NSArray {
+    get
+    set
+  }
+  public var expiryDate: Foundation.Date? {
+    get
+    set
+  }
+  public var failed: Swift.Bool?
+  public func dictionaryRepresentation(adding dict: [Swift.String : Any]? = nil) -> [Swift.String : Any]
+  public func getValidityPeriod() -> (Foundation.Date, Foundation.Date)?
+  public var debugDescription: Swift.String {
+    get
+  }
+  public static func getCertInfo(certData: Foundation.Data?) -> (Security.SecCertificate?, SessionWithNationalId.CertificateInfo?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class X509Certificate : Swift.CustomStringConvertible {
+  convenience public init(data: Foundation.Data) throws
+  public init(der: Foundation.Data) throws
+  convenience public init(pem: Foundation.Data) throws
+  public var description: Swift.String {
+    get
+  }
+  public func checkValidity(_ date: Foundation.Date = Date()) -> Swift.Bool
+  public var version: Swift.Int? {
+    get
+  }
+  public var serialNumber: Foundation.Data? {
+    get
+  }
+  public var issuerDistinguishedName: Swift.String? {
+    get
+  }
+  public var issuerOIDs: [Swift.String] {
+    get
+  }
+  public func issuer(oidString: Swift.String) -> Swift.String?
+  public func issuer(oid: SessionWithNationalId.OID) -> Swift.String?
+  @available(*, deprecated, message: "Use issuer(oid:) instead")
+  public func issuer(dn: SessionWithNationalId.ASN1DistinguishedNames) -> Swift.String?
+  public var subjectDistinguishedName: Swift.String? {
+    get
+  }
+  public var subjectOIDs: [Swift.String] {
+    get
+  }
+  public func subject(oidString: Swift.String) -> [Swift.String]?
+  public func subject(oid: SessionWithNationalId.OID) -> [Swift.String]?
+  @available(*, deprecated, message: "Use subject(oid:) instead")
+  public func subject(dn: SessionWithNationalId.ASN1DistinguishedNames) -> [Swift.String]?
+  public var notBefore: Foundation.Date? {
+    get
+  }
+  public var notAfter: Foundation.Date? {
+    get
+  }
+  public var signature: Foundation.Data? {
+    get
+  }
+  public var sigAlgName: Swift.String? {
+    get
+  }
+  public var sigAlgOID: Swift.String? {
+    get
+  }
+  public var sigAlgParams: Foundation.Data? {
+    get
+  }
+  public var keyUsage: [Swift.Bool] {
+    get
+  }
+  public var extendedKeyUsage: [Swift.String] {
+    get
+  }
+  public var subjectAlternativeNames: [Swift.String] {
+    get
+  }
+  public var issuerAlternativeNames: [Swift.String] {
+    get
+  }
+  public var publicKey: SessionWithNationalId.X509PublicKey? {
+    get
+  }
+  public var criticalExtensionOIDs: [Swift.String] {
+    get
+  }
+  public var nonCriticalExtensionOIDs: [Swift.String] {
+    get
+  }
+  public func extensionObject(oid: SessionWithNationalId.OID) -> SessionWithNationalId.X509Extension?
+  public func extensionObject(oid: Swift.String) -> SessionWithNationalId.X509Extension?
+  @objc deinit
+}
+public protocol BinaryDataEncodable {
+  func getBinaryData() -> Foundation.Data
+}
+@objc public class NSByteString : ObjectiveC.NSObject {
+  public init(_ value: Swift.String)
+  public init(bytes: [Swift.UInt8])
+  public func stringValue() -> Swift.String
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  public var byteArray: [Swift.UInt8] {
+    get
+  }
+  @objc deinit
+}
+extension SessionWithNationalId.NSByteString : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.Int : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.UInt : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.UInt8 : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.UInt16 : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.UInt64 : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.UInt32 : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.String : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.Float : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.Double : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Swift.Bool : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+@objc public class NSSimpleValue : ObjectiveC.NSObject {
+  public init(_ value: Foundation.NSNumber?)
+  public func stringValue() -> Swift.Bool
+  public class func decode(header: Swift.Int) -> Foundation.NSNumber?
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public var debugDescription: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+@objc public class NSTag : ObjectiveC.NSObject {
+  public init(tag: Swift.Int, _ value: ObjectiveC.NSObject)
+  public func tagValue() -> Swift.Int
+  public func objectValue() -> ObjectiveC.NSObject
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public var debugDescription: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension SessionWithNationalId.NSTag : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension ObjectiveC.NSObject : Any {
+}
+extension Foundation.NSNumber : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+extension Foundation.NSString : SessionWithNationalId.BinaryDataEncodable {
+  public func getBinaryData() -> Foundation.Data
+}
+@_hasMissingDesignatedInitializers public class ASN1Object : Swift.CustomStringConvertible {
+  public var rawValue: Foundation.Data?
+  public var value: Any?
+  public var identifier: SessionWithNationalId.ASN1Identifier?
+  weak public var parent: SessionWithNationalId.ASN1Object? {
+    get
+  }
+  public func sub(_ index: Swift.Int) -> SessionWithNationalId.ASN1Object?
+  public func subCount() -> Swift.Int
+  public func findOid(_ oid: SessionWithNationalId.OID) -> SessionWithNationalId.ASN1Object?
+  public func findOid(_ oid: Swift.String) -> SessionWithNationalId.ASN1Object?
+  public var description: Swift.String {
+    get
+  }
+  public var asString: Swift.String? {
+    get
+  }
+  @objc deinit
+}
+public struct NetworkError : Swift.Error, Foundation.LocalizedError, Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension SessionWithNationalId.DeviceGuruImplementation {
+  public static var libraryVersion: Swift.String {
+    get
+  }
+  final public var hardware: SessionWithNationalId.Hardware {
+    get
+  }
+}
+public enum Hardware {
+  case unknownDevice
+  case unknownIphone
+  case unknownIpod
+  case unknownIpad
+  case unknownAppleWatch
+  case unknownAppleTV
+  case simulator
+  case iphone_2g
+  case iphone_3g
+  case iphone_3gs
+  case iphone_4
+  case iphone_4_cdma
+  case iphone_4s
+  case iphone_5
+  case iphone_5_cdma_gsm
+  case iphone_5c
+  case iphone_5c_cdma_gsm
+  case iphone_5s
+  case iphone_5s_cdma_gsm
+  case iphone_6_plus
+  case iphone_6
+  case iphone_6s
+  case iphone_6s_plus
+  case iphone_se
+  case iphone_7
+  case iphone_7_plus
+  case iphone_7_gsm
+  case iphone_7_plus_gsm
+  case iphone_8_cn
+  case iphone_8_plus_cn
+  case iphone_x_cn
+  case iphone_8
+  case iphone_8_plus
+  case iphone_x
+  case iphone_xs
+  case iphone_xs_max
+  case iphone_xs_max_cn
+  case iphone_xr
+  case iphone_11
+  case iphone_11_pro
+  case iphone_11_pro_max
+  case iphone_se_2g
+  case iphone_12_mini
+  case iphone_12
+  case iphone_12_pro
+  case iphone_12_pro_max
+  case iphone_13_pro
+  case iphone_13_pro_max
+  case iphone_13_mini
+  case iphone_13
+  case iphone_se_3g
+  case iphone_14
+  case iphone_14_plus
+  case iphone_14_pro
+  case iphone_14_pro_max
+  case iphone_15
+  case iphone_15_plus
+  case iphone_15_pro_max
+  case ipod_touch_1g
+  case ipod_touch_2g
+  case ipod_touch_3g
+  case ipod_touch_4g
+  case ipod_touch_5g
+  case ipod_touch_6g
+  case ipod_touch_7g
+  case iPad
+  case ipad_3g
+  case ipad_2_wifi
+  case ipad_2
+  case ipad_2_cdma
+  case ipad_mini_wifi
+  case ipad_mini
+  case ipad_mini_wifi_cdma
+  case ipad_3_wifi
+  case ipad_3_wifi_cdma
+  case ipad_3
+  case ipad_4_wifi
+  case ipad_4
+  case ipad_4_gsm_cdma
+  case ipad_air_wifi
+  case ipad_air_wifi_gsm
+  case ipad_air_wifi_cdma
+  case ipad_mini_retina_wifi
+  case ipad_mini_retina_wifi_cdma
+  case ipad_mini_retina_wifi_cellular_cn
+  case ipad_mini_3_wifi
+  case ipad_mini_3_wifi_cellular
+  case ipad_mini_3_wifi_cellular_cn
+  case ipad_mini_4_wifi
+  case ipad_mini_4_wifi_cellular
+  case ipad_air_2_wifi
+  case ipad_air_2_wifi_cellular
+  case ipad_pro_97_wifi
+  case ipad_pro_97_wifi_cellular
+  case ipad_pro_wifi
+  case ipad_pro_wifi_cellular
+  case ipad_5_wifi
+  case ipad_5_wifi_cellular
+  case ipad_pro_2g_wifi
+  case ipad_pro_2g_wifi_cellular
+  case ipad_pro_105_wifi
+  case ipad_pro_105_wifi_cellular
+  case ipad_6_wifi
+  case ipad_6_wifi_cellular
+  case ipad_7_wifi
+  case ipad_7_wifi_cellular
+  case ipad_pro_11_wifi
+  case ipad_pro_11_1tb_wifi
+  case ipad_pro_11_wifi_cellular
+  case ipad_pro_11_1tb_wifi_cellular
+  case ipad_pro_3g_wifi
+  case ipad_pro_3g_1tb_wifi
+  case ipad_pro_3g_wifi_cellular
+  case ipad_pro_3g_1tb_wifi_cellular
+  case ipad_pro_11_2g_wifi
+  case ipad_pro_11_2g_wifi_cellular
+  case ipad_pro_4g_wifi
+  case ipad_pro_4g_wifi_cellular
+  case ipad_mini_5_wifi
+  case ipad_mini_5_wifi_cellular
+  case ipad_air_3_wifi
+  case ipad_air_3_wifi_cellular
+  case ipad_8g_wifi
+  case ipad_8g_wifi_cellular
+  case ipad_9g_wifi
+  case ipad_9g_wifi_cellular
+  case ipad_air_4_wifi
+  case ipad_air_4_wifi_cellular
+  case ipad_pro_11_3g_wifi
+  case ipad_pro_11_3g_1tb_wifi
+  case ipad_pro_11_3g_wifi_cellular
+  case ipad_pro_11_3g_1tb_wifi_cellular
+  case ipad_pro_5g_wifi
+  case ipad_pro_5g_1tb_wifi
+  case ipad_pro_5g_wifi_cellular
+  case ipad_pro_5g_1tb_wifi_cellular
+  case ipad_air_5_wifi
+  case ipad_air_5_wifi_cellular
+  case ipad_10g_wifi
+  case ipad_10g_wifi_cellular
+  case ipad_mini_6_wifi
+  case ipad_mini_6_wifi_cellular
+  case ipad_pro_11_4g_wifi
+  case ipad_pro_11_4g_wifi_cellular
+  case ipad_pro_11_4g_1tb_wifi_cellular
+  case ipad_pro_6g_wifi
+  case ipad_pro_6g_1tb_wifi
+  case ipad_pro_6g_wifi_cellular
+  case ipad_pro_6g_1tb_wifi_cellular
+  case apple_watch_38
+  case apple_watch_42
+  case apple_watch_series_2_38
+  case apple_watch_series_2_42
+  case apple_watch_series_1_38
+  case apple_watch_series_1_42
+  case apple_watch_series_3_38_cellular
+  case apple_watch_series_3_42_cellular
+  case apple_watch_series_3_38
+  case apple_watch_series_3_42
+  case apple_watch_series_4_40
+  case apple_watch_series_4_44
+  case apple_watch_series_4_40_cellular
+  case apple_watch_series_4_44_cellular
+  case apple_watch_series_5_40
+  case apple_watch_series_5_44
+  case apple_watch_series_5_40_cellular
+  case apple_watch_series_5_44_cellular
+  case apple_watch_se_1g_40
+  case apple_watch_se_1g_44
+  case apple_watch_se_1g_40_cellular
+  case apple_watch_se_1g_44_cellular
+  case apple_watch_series_6_40
+  case apple_watch_series_6_44
+  case apple_watch_series_6_40_cellular
+  case apple_watch_series_6_44_cellular
+  case apple_watch_series_7_41
+  case apple_watch_series_7_45
+  case apple_watch_series_7_41_cellular
+  case apple_watch_series_7_45_cellular
+  case apple_watch_se_2g_40
+  case apple_watch_se_2g_44
+  case apple_watch_se_2g_40_cellular
+  case apple_watch_se_2g_44_cellular
+  case apple_watch_series_8_41
+  case apple_watch_series_8_45
+  case apple_watch_series_8_41_cellular
+  case apple_watch_series_8_45_cellular
+  case apple_watch_ultra
+  case apple_tv_1g
+  case apple_tv_2g
+  case apple_tv_3g
+  case apple_tv_3_2g
+  case apple_tv_4g
+  case apple_tv_4k
+  case apple_tv_4k_2g
+  public static func == (a: SessionWithNationalId.Hardware, b: SessionWithNationalId.Hardware) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct DeviceVersion : Swift.Comparable {
+  public let major: Swift.Int
+  public let minor: Swift.Int
+  public init(major: Swift.Int, minor: Swift.Int)
+  public static func < (lhs: SessionWithNationalId.DeviceVersion, rhs: SessionWithNationalId.DeviceVersion) -> Swift.Bool
+  public static func == (lhs: SessionWithNationalId.DeviceVersion, rhs: SessionWithNationalId.DeviceVersion) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers public class ASN1Identifier : Swift.CustomStringConvertible {
+  public enum Class : Swift.UInt8 {
+    case universal
+    case application
+    case contextSpecific
+    case `private`
+    public init?(rawValue: Swift.UInt8)
+    public typealias RawValue = Swift.UInt8
+    public var rawValue: Swift.UInt8 {
+      get
+    }
+  }
+  public enum TagNumber : Swift.UInt8 {
+    case endOfContent
+    case boolean
+    case integer
+    case bitString
+    case octetString
+    case null
+    case objectIdentifier
+    case objectDescriptor
+    case external
+    case read
+    case enumerated
+    case embeddedPdv
+    case utf8String
+    case relativeOid
+    case sequence
+    case set
+    case numericString
+    case printableString
+    case t61String
+    case videotexString
+    case ia5String
+    case utcTime
+    case generalizedTime
+    case graphicString
+    case visibleString
+    case generalString
+    case universalString
+    case characterString
+    case bmpString
+    public init?(rawValue: Swift.UInt8)
+    public typealias RawValue = Swift.UInt8
+    public var rawValue: Swift.UInt8 {
+      get
+    }
+  }
+  public static let constructedTag: Swift.UInt8
+  public func typeClass() -> SessionWithNationalId.ASN1Identifier.Class
+  public func isPrimitive() -> Swift.Bool
+  public func isConstructed() -> Swift.Bool
+  public func tagNumber() -> SessionWithNationalId.ASN1Identifier.TagNumber
+  public var description: Swift.String {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class X509Extension {
+  public var oid: Swift.String? {
+    get
+  }
+  public var name: Swift.String? {
+    get
+  }
+  public var isCritical: Swift.Bool {
+    get
+  }
+  public var value: Any? {
+    get
+  }
+  @objc deinit
+}
+public class X509ExtAltName2 {
+  public init(der: Foundation.Data) throws
+  public var issuerAlternativeNamesAndTypes: [Swift.UInt8 : Swift.String]? {
+    get
+  }
+  public func extensionObject(oid: SessionWithNationalId.OID) -> SessionWithNationalId.X509ExtensionAltName2?
+  public func extensionObject(oid: Swift.String) -> SessionWithNationalId.X509ExtensionAltName2?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class X509ExtensionAltName2 {
+  @objc deinit
+}
+extension SessionWithNationalId.X509Certificate {
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class BasicConstraintExtension : SessionWithNationalId.X509Extension {
+    public var isCA: Swift.Bool {
+      get
+    }
+    public var pathLenConstraint: Swift.UInt64? {
+      get
+    }
+    @objc deinit
+  }
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class SubjectKeyIdentifierExtension : SessionWithNationalId.X509Extension {
+    override public var value: Any? {
+      get
+    }
+    @objc deinit
+  }
+  public struct AuthorityInfoAccess {
+    public let method: Swift.String
+    public let location: Swift.String
+  }
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class AuthorityInfoAccessExtension : SessionWithNationalId.X509Extension {
+    public var infoAccess: [SessionWithNationalId.X509Certificate.AuthorityInfoAccess]? {
+      get
+    }
+    @objc deinit
+  }
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class AuthorityKeyIdentifierExtension : SessionWithNationalId.X509Extension {
+    public var keyIdentifier: Foundation.Data? {
+      get
+    }
+    public var certificateIssuer: [Swift.String]? {
+      get
+    }
+    public var serialNumber: Foundation.Data? {
+      get
+    }
+    @objc deinit
+  }
+  public struct CertificatePolicyQualifier {
+    public let oid: Swift.String
+    public let value: Swift.String?
+  }
+  public struct CertificatePolicy {
+    public let oid: Swift.String
+    public let qualifiers: [SessionWithNationalId.X509Certificate.CertificatePolicyQualifier]?
+  }
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CertificatePoliciesExtension : SessionWithNationalId.X509Extension {
+    public var policies: [SessionWithNationalId.X509Certificate.CertificatePolicy]? {
+      get
+    }
+    @objc deinit
+  }
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CRLDistributionPointsExtension : SessionWithNationalId.X509Extension {
+    public var crls: [Swift.String]? {
+      get
+    }
+    @objc deinit
+  }
+}
+public enum Platform {
+  case iPhone
+  case iPodTouch
+  case iPad
+  case appleWatch
+  case appleTV
+  case unknown
+  public static func == (a: SessionWithNationalId.Platform, b: SessionWithNationalId.Platform) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol DeviceGuru {
+  static var libraryVersion: Swift.String { get }
+  var hardwareString: Swift.String { get }
+  var platform: SessionWithNationalId.Platform { get }
+  var hardware: SessionWithNationalId.Hardware { get }
+  func deviceVersion() throws -> SessionWithNationalId.DeviceVersion
+  func hardwareSimpleDescription() throws -> Swift.String
+  func hardwareDescription() throws -> Swift.String
+}
+public protocol LocalStorage {
+  func setValue(_ value: Any?, forKey key: Swift.String)
+  func object(forKey defaultName: Swift.String) -> Any?
+}
+@_hasMissingDesignatedInitializers @available(iOS 12.0, watchOS 9.0, *)
+public class SecurityHelpers {
+  public static func certificates(in bundle: Foundation.Bundle = Bundle.main) -> [Security.SecCertificate]
+  public static var nonAllowedExtensions: [Swift.String]
+  public static func now() -> Foundation.Date
+  public static var ecdsaAlgOIDs: [Swift.String] {
+    get
+  }
+  public static func isValidMdlPublicKey(secCert: Security.SecCertificate, usage: SessionWithNationalId.CertificateUsage, rootCerts: [Security.SecCertificate]? = nil, checkCrl: Swift.Bool = true, maxValPeriod: Swift.UInt = UInt.max) -> (isValid: Swift.Bool, reason: Swift.String?, rootCert: Security.SecCertificate?)
+  public static func trustIsValid(_ trust: Security.SecTrust) -> Swift.Bool
+  public static func verifyJwt(jwt: Swift.String, myHeader: JOSESwift.JWSHeader) -> Swift.Bool
+  public static func getCertInfo(from certString: Swift.String, failed: Swift.Bool? = nil) -> (Security.SecCertificate?, SessionWithNationalId.CertificateInfo?)
+  public static func randomNonceString(length: Swift.Int = 32) -> Swift.String
+  @available(iOS 13, *)
+  public static func sha256(_ input: Swift.String) -> Swift.String
+  @objc deinit
+}
+public enum CertificateUsage {
+  case mdocAuth
+  case mdocReaderAuth
+  case online
+  public static func == (a: SessionWithNationalId.CertificateUsage, b: SessionWithNationalId.CertificateUsage) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum NotAllowedExtension : Swift.String, Swift.CaseIterable {
+  case policyMappings
+  case nameConstraints
+  case policyConstraints
+  case inhibitAnyPolicy
+  case freshestCRL
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [SessionWithNationalId.NotAllowedExtension]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [SessionWithNationalId.NotAllowedExtension] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension SessionWithNationalId.ECVerifier {
+  public func verify(jwt: Swift.String) -> Swift.Bool
+}
+extension Swift.String {
+  public func localized() -> Swift.String
+}
+public enum OID : Swift.String {
+  case etsiQcsCompliance
+  case etsiQcsRetentionPeriod
+  case etsiQcsQcSSCD
+  case dsa
+  case ecPublicKey
+  case prime256v1
+  case ecdsaWithSHA256
+  case ecdsaWithSHA384
+  case ecdsaWithSHA512
+  case rsaEncryption
+  case rsaPSS
+  case sha256WithRSAEncryption
+  case md5WithRSAEncryption
+  case sha1WithRSAEncryption
+  case sha1
+  case pkcsSha256
+  case sha2Family
+  case sha3_244
+  case sha3_256
+  case sha3_384
+  case md5
+  case pkcs7data
+  case pkcs7signedData
+  case pkcs7envelopedData
+  case emailAddress
+  case signingCertificateV2
+  case contentType
+  case messageDigest
+  case signingTime
+  case certificateExtension
+  case jurisdictionLocalityName
+  case jurisdictionStateOrProvinceName
+  case jurisdictionCountryName
+  case authorityInfoAccess
+  case qcStatements
+  case cps
+  case unotice
+  case serverAuth
+  case clientAuth
+  case ocsp
+  case caIssuers
+  case dateOfBirth
+  case sha256
+  case VeriSignEVpolicy
+  case extendedValidation
+  case organizationValidated
+  case subjectKeyIdentifier
+  case keyUsage
+  case subjectAltName
+  case issuerAltName
+  case basicConstraints
+  case cRLDistributionPoints
+  case certificatePolicies
+  case authorityKeyIdentifier
+  case extKeyUsage
+  case subjectDirectoryAttributes
+  case commonName
+  case surname
+  case serialNumber
+  case countryName
+  case localityName
+  case stateOrProvinceName
+  case streetAddress
+  case organizationName
+  case organizationalUnitName
+  case businessCategory
+  case postalCode
+  case givenName
+  case dnQualifier
+  case domainComponent
+  case userId
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+final public class CreateSessionHandler {
+  public init(delegate: any SessionWithNationalId.SessionCreatable)
+  final public func createSession(with nationalId: Swift.String)
+  @objc deinit
+}
+extension Foundation.Data {
+  public var arr: [Swift.UInt8] {
+    get
+  }
+  public var hexString: Swift.String {
+    get
+  }
+}
+public struct ECError : Swift.Error, Swift.Equatable {
+  public let localizedDescription: Swift.String
+  public static let invalidPEMString: SessionWithNationalId.ECError
+  public static let unknownPEMHeader: SessionWithNationalId.ECError
+  public static let failedBase64Encoding: SessionWithNationalId.ECError
+  public static let failedASN1Decoding: SessionWithNationalId.ECError
+  public static let unsupportedCurve: SessionWithNationalId.ECError
+  public static let failedNativeKeyCreation: SessionWithNationalId.ECError
+  public static let failedEvpInit: SessionWithNationalId.ECError
+  public static let failedSigningAlgorithm: SessionWithNationalId.ECError
+  public static let invalidRSLength: SessionWithNationalId.ECError
+  public static let failedEncryptionAlgorithm: SessionWithNationalId.ECError
+  public static let failedDecryptionAlgorithm: SessionWithNationalId.ECError
+  public static let failedUTF8Decoding: SessionWithNationalId.ECError
+  public static func == (lhs: SessionWithNationalId.ECError, rhs: SessionWithNationalId.ECError) -> Swift.Bool
+}
+public protocol ECPrivateKey {
+  init(secKey: Security.SecKey)
+  var nativeKey: Security.SecKey { get }
+  var curveId: Swift.String { get }
+  var curve: SessionWithNationalId.EllipticCurve { get }
+  var algorithm: Security.SecKeyAlgorithm { get }
+}
+public class ECPrivateKeyES512 : SessionWithNationalId.ECPrivateKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public class ECPrivateKeyES384 : SessionWithNationalId.ECPrivateKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public class ECPrivateKeyES256 : SessionWithNationalId.ECPrivateKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public protocol ECPublicKey {
+  init(secKey: Security.SecKey)
+  var nativeKey: Security.SecKey { get }
+  var curveId: Swift.String { get }
+  var curve: SessionWithNationalId.EllipticCurve { get }
+}
+public class ECPublicKeyES512 : SessionWithNationalId.ECPublicKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public class ECPublicKeyES384 : SessionWithNationalId.ECPublicKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public class ECPublicKeyES256 : SessionWithNationalId.ECPublicKey {
+  public var curveId: Swift.String
+  public var curve: SessionWithNationalId.EllipticCurve
+  public var nativeKey: Security.SecKey
+  final public let pemString: Swift.String!
+  required public init(secKey: Security.SecKey)
+  @objc deinit
+}
+public protocol ECSignature {
+  func verify(plaintext: Swift.String, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  func verify(plaintext: Foundation.Data, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  func makeSig(plaintext: Foundation.Data, using ecPrivateKey: any SessionWithNationalId.ECPrivateKey) -> Foundation.Data?
+  var algorithm: Security.SecKeyAlgorithm { get }
+}
+public struct ECSignatureES256 : SessionWithNationalId.ECSignature {
+  public let r: Foundation.Data
+  public let s: Foundation.Data
+  public let asn1: Foundation.Data
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  public init()
+  public init(sig: Foundation.Data) throws
+  public init(r: Foundation.Data, s: Foundation.Data) throws
+  public func verify(plaintext: Swift.String, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func verify(plaintext: Foundation.Data, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func makeSig(plaintext: Foundation.Data, using ecPrivateKey: any SessionWithNationalId.ECPrivateKey) -> Foundation.Data?
+}
+public struct ECSignatureES384 : SessionWithNationalId.ECSignature {
+  public let r: Foundation.Data
+  public let s: Foundation.Data
+  public let asn1: Foundation.Data
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  public init()
+  public init(r: Foundation.Data, s: Foundation.Data) throws
+  public init(sig: Foundation.Data) throws
+  public func verify(plaintext: Swift.String, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func verify(plaintext: Foundation.Data, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func makeSig(plaintext: Foundation.Data, using ecPrivateKey: any SessionWithNationalId.ECPrivateKey) -> Foundation.Data?
+}
+public struct ECSignatureES512 : SessionWithNationalId.ECSignature {
+  public let r: Foundation.Data
+  public let s: Foundation.Data
+  public let asn1: Foundation.Data
+  public var algorithm: Security.SecKeyAlgorithm {
+    get
+  }
+  public init()
+  public init(r: Foundation.Data, s: Foundation.Data) throws
+  public init(sig: Foundation.Data) throws
+  public func verify(plaintext: Swift.String, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func verify(plaintext: Foundation.Data, using ecPublicKey: any SessionWithNationalId.ECPublicKey) -> Swift.Bool
+  public func makeSig(plaintext: Foundation.Data, using ecPrivateKey: any SessionWithNationalId.ECPrivateKey) -> Foundation.Data?
+}
+@_hasMissingDesignatedInitializers public class ECSigner {
+  public func sign(data: Foundation.Data) -> Foundation.Data?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class ECVerifier {
+  public func verify(signature: Foundation.Data, for data: Foundation.Data) -> Swift.Bool
+  @objc deinit
+}
+extension Foundation.Data {
+  public var bytes: [Swift.UInt8] {
+    get
+  }
+  public var binary_decimal: Swift.Int {
+    get
+  }
+  public var hex: Swift.String {
+    get
+  }
+  public var hex2: Swift.String {
+    get
+  }
+  public var string: Swift.String {
+    get
+  }
+}
+extension Swift.Int {
+  public var decimal_binary: [Swift.UInt8] {
+    get
+  }
+  public var hex: Swift.String {
+    get
+  }
+}
+extension Swift.String {
+  public var bytes: [Swift.UInt8] {
+    get
+  }
+  public var data: Foundation.Data? {
+    get
+  }
+  public var hex: Swift.String {
+    get
+  }
+  public var hex_ascii: Swift.String {
+    get
+  }
+  public var ascii_bytes: [Swift.UInt8] {
+    get
+  }
+  public var hex_decimal: Swift.Int {
+    get
+  }
+  public var hex_binary: [Swift.UInt8] {
+    get
+  }
+  public func isCodeWeak() -> Swift.Bool
+}
+extension Foundation.NSString {
+  public var hex: Swift.String {
+    get
+  }
+  public var ascii_bytes: [Swift.UInt8] {
+    get
+  }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  public var hex_decimal: Swift.Int {
+    get
+  }
+  public var binary_decimal: Swift.Int {
+    get
+  }
+}
+public enum CreateSessionApi {
+  case createSessionForUser(data: Swift.String)
+}
+extension SessionWithNationalId.CreateSessionApi : Moya.TargetType {
+  public var path: Swift.String {
+    get
+  }
+  public var method: Moya.Method {
+    get
+  }
+  public var task: Moya.Task {
+    get
+  }
+}
+public struct CreateSessionResponse : Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers @available(*, deprecated, message: "Use OID instead")
+public class ASN1DistinguishedNames {
+  final public let oid: Swift.String
+  final public let representation: Swift.String
+  public static let commonName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let dnQualifier: SessionWithNationalId.ASN1DistinguishedNames
+  public static let serialNumber: SessionWithNationalId.ASN1DistinguishedNames
+  public static let givenName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let surname: SessionWithNationalId.ASN1DistinguishedNames
+  public static let organizationalUnitName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let organizationName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let streetAddress: SessionWithNationalId.ASN1DistinguishedNames
+  public static let localityName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let stateOrProvinceName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let countryName: SessionWithNationalId.ASN1DistinguishedNames
+  public static let email: SessionWithNationalId.ASN1DistinguishedNames
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class ASN1DistinguishedNameFormatter {
+  public static var separator: Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class X509PublicKey {
+  public var algOid: Swift.String? {
+    get
+  }
+  public var algName: Swift.String? {
+    get
+  }
+  public var algParams: Swift.String? {
+    get
+  }
+  public var derEncodedKey: Foundation.Data? {
+    get
+  }
+  public var key: Foundation.Data? {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class X509CRL : Swift.CustomStringConvertible {
+  convenience public init(data: Foundation.Data) throws
+  public init(der: Foundation.Data) throws
+  convenience public init(pem: Foundation.Data) throws
+  public var description: Swift.String {
+    get
+  }
+  public var badBlocks: [SessionWithNationalId.ASN1Object]? {
+    get
+  }
+  public var badSerials: [Foundation.Data]? {
+    get
+  }
+  public var badDates: [Foundation.Date]? {
+    get
+  }
+  public var badSerialNumbers: [Swift.String]? {
+    get
+  }
+  public static func dataToHexString(_ data: Foundation.Data) -> Swift.String
+  @objc deinit
+}
+public enum X509CRLError : Swift.Error {
+  case parseError
+  case outOfBuffer
+  public static func == (a: SessionWithNationalId.X509CRLError, b: SessionWithNationalId.X509CRLError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class PKCS12 {
+  public var label: Swift.String?
+  public var keyID: Foundation.Data?
+  public var trust: Security.SecTrust?
+  public var identity: Security.SecIdentity?
+  public init(data: Foundation.Data, password: Swift.String)
+  convenience public init?(mainBundleResource: Swift.String, resourceType: Swift.String, password: Swift.String)
+  public func urlCredential() -> Foundation.URLCredential
+  @objc deinit
+}
+public protocol HardwareDetailProvider {
+  var hardwareString: Swift.String { get }
+}
+public struct HardwareDetailProviderImplementation : SessionWithNationalId.HardwareDetailProvider {
+  public init()
+  public var hardwareString: Swift.String {
+    get
+  }
+}
+@available(macOS 10.13, iOS 11, tvOS 11.0, *)
+public struct EllipticCurve : Swift.Equatable, Swift.CustomStringConvertible {
+  public static let prime256v1: SessionWithNationalId.EllipticCurve
+  public static let secp384r1: SessionWithNationalId.EllipticCurve
+  public static let secp521r1: SessionWithNationalId.EllipticCurve
+  public static func == (lhs: SessionWithNationalId.EllipticCurve, rhs: SessionWithNationalId.EllipticCurve) -> Swift.Bool
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol SessionCreatable : AnyObject {
+  func didsessionCreated(data: Swift.String)
+  func didSendError(error: Swift.String)
+}
+extension SessionWithNationalId.VerifyAlgorithmType : Swift.Equatable {}
+extension SessionWithNationalId.VerifyAlgorithmType : Swift.Hashable {}
+extension SessionWithNationalId.VerifyAlgorithmType : Swift.RawRepresentable {}
+extension SessionWithNationalId.MacAlgorithmType : Swift.Equatable {}
+extension SessionWithNationalId.MacAlgorithmType : Swift.Hashable {}
+extension SessionWithNationalId.MacAlgorithmType : Swift.RawRepresentable {}
+extension SessionWithNationalId.DigestAlgorithmType : Swift.Equatable {}
+extension SessionWithNationalId.DigestAlgorithmType : Swift.Hashable {}
+extension SessionWithNationalId.DigestAlgorithmType : Swift.RawRepresentable {}
+extension SessionWithNationalId.EllipticCurveType : Swift.Equatable {}
+extension SessionWithNationalId.EllipticCurveType : Swift.Hashable {}
+extension SessionWithNationalId.EllipticCurveType : Swift.RawRepresentable {}
+extension SessionWithNationalId.Hardware : Swift.Equatable {}
+extension SessionWithNationalId.Hardware : Swift.Hashable {}
+extension SessionWithNationalId.ASN1Identifier.Class : Swift.Equatable {}
+extension SessionWithNationalId.ASN1Identifier.Class : Swift.Hashable {}
+extension SessionWithNationalId.ASN1Identifier.Class : Swift.RawRepresentable {}
+extension SessionWithNationalId.ASN1Identifier.TagNumber : Swift.Equatable {}
+extension SessionWithNationalId.ASN1Identifier.TagNumber : Swift.Hashable {}
+extension SessionWithNationalId.ASN1Identifier.TagNumber : Swift.RawRepresentable {}
+extension SessionWithNationalId.Platform : Swift.Equatable {}
+extension SessionWithNationalId.Platform : Swift.Hashable {}
+extension SessionWithNationalId.CertificateUsage : Swift.Equatable {}
+extension SessionWithNationalId.CertificateUsage : Swift.Hashable {}
+extension SessionWithNationalId.NotAllowedExtension : Swift.Equatable {}
+extension SessionWithNationalId.NotAllowedExtension : Swift.Hashable {}
+extension SessionWithNationalId.NotAllowedExtension : Swift.RawRepresentable {}
+extension SessionWithNationalId.OID : Swift.Equatable {}
+extension SessionWithNationalId.OID : Swift.Hashable {}
+extension SessionWithNationalId.OID : Swift.RawRepresentable {}
+extension SessionWithNationalId.X509CRLError : Swift.Equatable {}
+extension SessionWithNationalId.X509CRLError : Swift.Hashable {}

@@ -1,0 +1,6 @@
+framework module SessionWithNationalId {
+  umbrella header "SessionWithNationalId.h"
+  export *
+
+  module * { export * }
+}
